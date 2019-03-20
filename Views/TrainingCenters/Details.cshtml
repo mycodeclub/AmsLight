@@ -1,0 +1,166 @@
+﻿@model AmsLight.Models.TrainingCenter
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">  Training Center Deatails </div>
+    <div class="card-body container">
+        <div class="row">
+            <div class="col-10">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:200px">Center Code</th>
+                            <td> @Model.CenterCode</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Center Name</th>
+                            <td> @Model.CenterName</td>
+                        </tr>
+                        <tr>
+                            <th>State</th>
+                            <td> @Model.State</td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td> @Model.City</td>
+                        </tr>
+                        <tr>
+                            <th>Zip</th>
+                            <td> @Model.Zip</td>
+                        </tr>
+                        <tr>
+                            <th>Address Line 1</th>
+                            <td> @Model.AddressLine1</td>
+                        </tr>
+                        <tr>
+                            <th>Address Line 2</th>
+                            <td> @Model.AddressLine2</td>
+                        </tr>
+                        <tr>
+                            <th>Phone 1</th>
+                            <td> @Model.Phone1</td>
+                        </tr>
+                        <tr>
+                            <th>Phone 2</th>
+                            <td> @Model.Phone2</td>
+                        </tr>
+                        <tr>
+                            <th>IsActive</th>
+                            <td> @Model.IsActive </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingCenterId }) |
+                    @Html.ActionLink("Back to List", "Index")
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*<div>
+        <h4>TrainingCenter</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TpId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TpId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CenterCode)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CenterCode)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CenterName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CenterName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone1)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phone1)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone2)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phone2)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.State)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.State)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AddressLine1)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AddressLine1)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AddressLine2)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AddressLine2)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Zip)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Zip)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingCenterId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

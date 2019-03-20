@@ -1,0 +1,63 @@
+﻿@model AmsLight.Models.Batch
+
+@{
+    ViewBag.Title = "Batche Detail";
+    ViewBag.HeaderText = "Details Of Batches";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">  Training Center Deatails </div>
+    <div class="card-body container">
+        <div class="row">
+            <div class="col-10">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:200px">
+                                Batch Code
+                            </th>
+                            <td>
+                                @Model.BatchCode
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th> Center Name</th>
+                            <td> @Model.TrainingCenter.CenterName | @Model.TrainingCenter.State | @Model.TrainingCenter.City  | @Model.TrainingCenter.AddressLine1| @Model.TrainingCenter.AddressLine2 </td>
+                        </tr>
+                        <tr>
+                            <th>Start Date</th>
+                            <td> @Model.StartDate</td>
+                        </tr>
+                        <tr>
+                            <th> Start Time</th>
+                            <td> @Model.StartTime</td>
+                        </tr>
+                        <tr>
+                            <th> End Time</th>
+                            <td> @Model.EndTime</td>
+                        </tr>
+                        <tr>
+                            <th> Trainer 1</th>
+                            <td> @Model.Trainer1</td>
+                        </tr>
+                        <tr>
+                            <th> Trainer 2</th>
+                            <td> @Model.Trainer2</td>
+                        </tr>
+                        <tr>
+                            <th> Total Students</th>
+                            <td> @Model.Students.Count</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BatchId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

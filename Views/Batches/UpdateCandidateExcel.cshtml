@@ -1,0 +1,43 @@
+﻿@model AmsLight.Models.CandidateExcel
+<div class="container">
+    <div class="card">
+        <div class="card-header">  List Of Students ( Candidate  ) || NOTE: While uploading new Excell You are overriding the existing list of candidates.</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        @using (Html.BeginForm("UpdateCandidateExcel", "Batches", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {@Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.BatchId)
+                        <div class="form-horizontal">
+                            @Html.TextBoxFor(model => model.File, new { type = "file", @style = "padding-top: 5px;", onchange = "UpdateImage(this)" })
+                            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                            <input class="btn btn-success pull-center" type="submit" value="Upload" />
+                        </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="progress" class="modal">
+    <div class="center">
+        <img src="~/images/loader4.gif" />
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    function OnSuccess(response) {
+        var message = "Person Id: " + response.PersonId;
+        message += "\nName: " + response.Name;
+        message += "\nGender: " + response.Gender;
+        message += "\nCity: " + response.City;
+        alert(message);
+    }
+    function OnFailure(response) {
+        alert("Error occured.");
+    }
+</script>

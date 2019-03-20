@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AmsLight.Models.Batch>
+@{
+    ViewBag.Title = "Batches";
+    ViewBag.HeaderText = "List Of Batches";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-header">  List Of Batches </div>
+    <div class="card-body">
+        <div class="row">
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BatchCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Center)
+                    </th>
+                    <th>
+                        Timing
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Trainer1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Trainer2)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BatchCode)
+                        </td>
+                        <td>
+                            @item.TrainingCenter.CenterName -  @item.TrainingCenter.CenterCode
+                        </td>
+                        <td>
+                            @item.StartTime To @item.EndTime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Trainer1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Trainer2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.BatchId }) |
+                            @Html.ActionLink("View", "Details", new { id = item.BatchId })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+﻿@model AmsLight.Models.Batch
+@{
+    ViewBag.Title = "Batche";
+    ViewBag.HeaderText = "Edit Batches Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.BatchId)
+        <div class="card">
+            <div class="card-header">
+                Enter Batch Details         @Html.ActionLink("Back to List", "Index")
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TrainingCenterId, "TrainingCenterId", htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownList("TrainingCenterId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TrainingCenterId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BatchCode, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BatchCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label" })
+                            <input class="form-control text-box single-line" id="StartTime" name="StartTime" type="time" value=@Model.StartTime>
+                            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label" })
+                            <input class="form-control text-box single-line" id="EndTime" name="EndTime" type="time" value=@Model.EndTime>
+                            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Trainer1, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Trainer1, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+
+                            @Html.LabelFor(model => model.Trainer2, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Trainer2, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-success" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+    </div>
+}
+<br />
+<br />
+
+@{ Html.RenderAction("UpdateCandidateExcel", new { BatchId = Model.BatchId }); }
+<br />
+<br />
+<br />
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">  List Of Students ( Candidate  )</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <table class="table" width="90%">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Name</th>
+                                    <th>Candidate Code</th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < Model.Students.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(m => Model.Students[i].StudentId)
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => Model.Students[i].StudentName, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => Model.Students[i].StudentName, "", new { @class = "text-danger" })
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => Model.Students[i].CandidateCode, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => Model.Students[i].CandidateCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,92 @@
+﻿@model AmsLight.Models.Batch
+@{
+    ViewBag.Title = "Batche";
+    ViewBag.HeaderText = "Create Batche";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="card">
+        <div class="card-header"> Enter Batch Details </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TrainingCenterId, "TrainingCenterId", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("TrainingCenterId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TrainingCenterId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BatchCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BatchCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Trainer1, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Trainer1, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Trainer2, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Trainer2, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Create" class="btn btn-success" style="width:100%" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
