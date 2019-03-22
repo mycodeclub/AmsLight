@@ -18,6 +18,8 @@ namespace AmsLight.Models
         public HttpPostedFileBase File { get; set; }
         public string ValidExcelFormets = @"xls, xlsx";
 
+        public string Message { get; set; }
+
         public int BatchId { get; set; }
 
 
