@@ -3,4 +3,92 @@
     ViewBag.Title = "Attendence";
     ViewBag.HeaderText = "Update Attendence";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<AmsLight.Models.TrainingCenter> tc = ViewBag.TrainingCenters;
+    List<AmsLight.Models.Batch> batches = ViewBag.Batches;
+    List<AmsLight.Models.Student> Students = ViewBag.Students;
+    var SelectedTcId = ViewBag.SelectedTcId;
+    var SelectedBatchId = ViewBag.SelectedBatchId;
 }
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Select Select Training Center and Batch to genrate Attendence.
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="BatchId">Select Training Center </label>
+                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
+                            <option id="-1" value="-1"> Select Training Center</option>
+                            @foreach (var trainingCenter in tc)
+                            {
+                                string selected = "";
+                                if (SelectedTcId == trainingCenter.TrainingCenterId)
+                                {
+                                    selected = "selected";
+                                }
+                                <option @selected value=" "> @trainingCenter.CenterName </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="BatchId"> Select Batch Code</label>
+                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
+                            <option id="-1" value="-1"> Select Batchs</option>
+                            @foreach (var batch in batches)
+                            {
+                                string selected = "";
+                                if (SelectedBatchId == batch.BatchId)
+                                {
+                                    selected = "selected";
+                                }
+                                <option @selected value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Update Attendence.
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <table class="table-responsive" id="BatchTable">
+                    <thead>
+                        <tr>
+                            <th>S. No. </th>
+                            <th> Student Name</th>
+                            <th>   Candidate Code </th>
+                            <th>   IsPresent    </th>
+                            <th>   Punch In Time </th>
+                            <th>   Punch Out Time </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Students.Count; i++)
+                        {
+                            <tr>
+                                <td> @(i + 1).</td>
+                                <td>@Students[i].StudentName</td>
+                                <td>@Students[i].CandidateCode</td>
+                                <td>@Students[i].IsPresent</td>
+                                <td>@Students[i].PunchInTime</td>
+                                <td>@Students[i].PunchOutTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
