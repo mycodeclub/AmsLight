@@ -3311,6 +3311,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AmsDbContext.cs" />
+    <Compile Include="Models\Attendance.cs" />
     <Compile Include="Models\Batch.cs" />
     <Compile Include="Models\CandidateExcel.cs" />
     <Compile Include="Models\Login.cs" />

@@ -1,7 +1,9 @@
 ﻿using AmsLight.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,13 +18,52 @@ namespace AmsLight.Controllers
         public ActionResult Index(int tcId = 2, int batchId = 1)
         {
             var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-            ViewBag.TrainingCenters = db.TrainingCenters.Where(tc => tc.TpId == tpId).ToList();
-            ViewBag.Batches = db.Batches.Where(b => b.TrainingCenterId == tcId).ToList();
-            ViewBag.Students = db.Students.Where(s => s.BatchId == batchId).ToList();
-            ViewBag.SelectedTcId = tcId;
-            ViewBag.SelectedBatchId = batchId;
+            Attendance att = (tcId > 0 && batchId > 0) ? new Attendance(tcId, batchId) : (tcId > 0) ? new Attendance(tcId) : new Attendance();
+            Random random = new Random();
+            att.Students.ForEach(s =>
+            {
+                s.IsPresent = true;
+                s.PunchInTime = new TimeSpan(
+                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Hours - 1, att.SelectedBatch.StartTime.Hours)),
+                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Minutes - 30, att.SelectedBatch.StartTime.Minutes + 30)),
+                   Convert.ToInt32(random.Next(1, 60)));
+                s.PunchOutTime = new TimeSpan(
+    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Hours - 1, att.SelectedBatch.EndTime.Hours)),
+    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Minutes - 30, att.SelectedBatch.EndTime.Minutes + 10)),
+    Convert.ToInt32(random.Next(1, 60)));
+            });
+            return View(att);
+        }
 
-            return View();
+        public ActionResult DownloadCSV(Attendance att)
+        {
+            try
+            {
+                var csv = new StringBuilder();
+                int count = 3;
+                var TRN2 = "20185753161";
+                var CandidateCode = string.Empty; // Populated by Excel
+                var attendancesDate = att.AttendancesDate.Year.ToString() + att.AttendancesDate.Month.ToString() + att.AttendancesDate.Day.ToString();
+                csv.Append("FH^1^1.0.0^TP^12^2018121719:42:38+0530^45^34173cb38f07f89ddbebc2ac9128303f\n");
+                csv.Append("BH^2^TPC^ 00123221\n");
+                foreach (var stu in att.Students)
+                {
+                    var punchInTime = attendancesDate + stu.PunchInTime.Hours + stu.PunchInTime.Minutes + stu.PunchInTime.Seconds;
+                    var punchOutTime = attendancesDate + stu.PunchOutTime.Hours + ":" + stu.PunchOutTime.Minutes + ":" + stu.PunchOutTime.Seconds;
+                    if (count == 3) csv.Append("BD^" + count + "^ " + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer1 + "^20185754178^P^" + attendancesDate + "^" + punchInTime + "0530^" + punchOutTime + "+0530\n");
+                    else if (count == 4) csv.Append("BD^" + count + "^ " + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer2 + "^20185754178^P^" + attendancesDate + "^" + punchInTime + "0530^" + punchOutTime + "+0530\n");
+                    else if (stu.IsPresent) csv.Append("BD^" + count + "^ " + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
+                    else csv.Append("BD^" + count + "^ " + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^A^\n");
+                    count++;
+                }
+                System.IO.File.WriteAllText("D:/StudentAtt.csv", csv.ToString());
+                return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+
+            }
         }
     }
 }

@@ -1,31 +1,38 @@
-﻿@model IEnumerable<AmsLight.Models.Student>
+﻿@model AmsLight.Models.Attendance
 @{
     ViewBag.Title = "Attendence";
     ViewBag.HeaderText = "Update Attendence";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<AmsLight.Models.TrainingCenter> tc = ViewBag.TrainingCenters;
-    List<AmsLight.Models.Batch> batches = ViewBag.Batches;
-    List<AmsLight.Models.Student> Students = ViewBag.Students;
-    var SelectedTcId = ViewBag.SelectedTcId;
-    var SelectedBatchId = ViewBag.SelectedBatchId;
+    //List<AmsLight.Models.TrainingCenter> tc = ViewBag.TrainingCenters;
+    //List<AmsLight.Models.Batch> batches = ViewBag.Batches;
+    //List<AmsLight.Models.Student> Students = ViewBag.Students;
+    //AmsLight.Models.TrainingCenter SelectedTc = ViewBag.SelectedTc;
+    //AmsLight.Models.Batch SelectedBatch = ViewBag.SelectedBatch;
 }
 
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            Select Select Training Center and Batch to genrate Attendence.
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
+    @using (Html.BeginForm("DownloadCSV", "Attendance", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.SelectedBatch.BatchCode)
+        @Html.HiddenFor(m => m.SelectedBatch.Trainer1)
+        @Html.HiddenFor(m => m.SelectedBatch.Trainer2)
+
+        <div class="card">
+            <div class="card-header">
+                Select Select Training Center and Batch to genrate Attendence.
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label" for="BatchId">Select Training Center </label>
                         <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
                             <option id="-1" value="-1"> Select Training Center</option>
-                            @foreach (var trainingCenter in tc)
+                            @foreach (var trainingCenter in Model.TrainingCenters)
                             {
                                 string selected = "";
-                                if (SelectedTcId == trainingCenter.TrainingCenterId)
+                                if (Model.SelectedTc.TrainingCenterId == trainingCenter.TrainingCenterId)
                                 {
                                     selected = "selected";
                                 }
@@ -33,62 +40,90 @@
                             }
                         </select>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
+                    <div class="form-group col-md-4 col-sm-4 col-xs-12">
+
                         <label class="control-label" for="BatchId"> Select Batch Code</label>
                         <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
                             <option id="-1" value="-1"> Select Batchs</option>
-                            @foreach (var batch in batches)
+                            @foreach (var batch in Model.Batches)
                             {
                                 string selected = "";
-                                if (SelectedBatchId == batch.BatchId)
+                                if (Model.SelectedBatch.BatchId == batch.BatchId)
                                 {
                                     selected = "selected";
                                 }
                                 <option @selected value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
                             }
                         </select>
+
+                    </div>
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => Model.AttendancesDate)
+                        @Html.EditorFor(model => Model.AttendancesDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AttendancesDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <b> Batch Code : </b>
+                        @Html.Label(Model.SelectedBatch.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-group col-4">
+                        <b> TRN1 : </b>
+                        @Html.Label(Model.SelectedBatch.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </div>
+                    <div class="form-group col-4">
+                        <b>TRN2: </b>
+                        @Html.Label(Model.SelectedBatch.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Update Attendence    <input type="submit" value="Download CSV" class="btn btn-primary float-right" />
+
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-12">
+                        <table class="table" id="AttendanceTable">
+                            <thead>
+                                <tr>
+                                    <th>S. No. </th>
+                                    <th> Student Name </th>
+                                    <th> Candidate Code </th>
+                                    <th> IsPresent </th>
+                                    <th> Punch In Time </th>
+                                    <th> Punch Out Time </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Students.Count; i++)
+                                {
+                                    <tr>
+                                        <td> @(i + 1).</td>
+                                        <td> @Model.Students[i].StudentName</td>
+                                        <td> @Model.Students[i].CandidateCode</td>
+                                        <td> @Html.CheckBoxFor(m => Model.Students[i].IsPresent) </td>
+                                        <td> @Html.TextBoxFor(m => Model.Students[i].PunchInTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
+                                        <td> @Html.TextBoxFor(m => Model.Students[i].PunchOutTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            Update Attendence.
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <table class="table-responsive" id="BatchTable">
-                    <thead>
-                        <tr>
-                            <th>S. No. </th>
-                            <th> Student Name</th>
-                            <th>   Candidate Code </th>
-                            <th>   IsPresent    </th>
-                            <th>   Punch In Time </th>
-                            <th>   Punch Out Time </th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Students.Count; i++)
-                        {
-                            <tr>
-                                <td> @(i + 1).</td>
-                                <td>@Students[i].StudentName</td>
-                                <td>@Students[i].CandidateCode</td>
-                                <td>@Students[i].IsPresent</td>
-                                <td>@Students[i].PunchInTime</td>
-                                <td>@Students[i].PunchOutTime</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    }
 </div>
+
+
+@section Scripts{
+
+}
