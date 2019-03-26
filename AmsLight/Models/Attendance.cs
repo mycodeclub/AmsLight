@@ -52,5 +52,6 @@ namespace AmsLight.Models
             SelectedBatch = db.Batches.Find(batchId);
             AttendancesDate = DateTime.Now;
         }
+
     }
 }

@@ -3,11 +3,6 @@
     ViewBag.Title = "Attendence";
     ViewBag.HeaderText = "Update Attendence";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //List<AmsLight.Models.TrainingCenter> tc = ViewBag.TrainingCenters;
-    //List<AmsLight.Models.Batch> batches = ViewBag.Batches;
-    //List<AmsLight.Models.Student> Students = ViewBag.Students;
-    //AmsLight.Models.TrainingCenter SelectedTc = ViewBag.SelectedTc;
-    //AmsLight.Models.Batch SelectedBatch = ViewBag.SelectedBatch;
 }
 
 <div class="container">
@@ -18,7 +13,6 @@
         @Html.HiddenFor(m => m.SelectedBatch.BatchCode)
         @Html.HiddenFor(m => m.SelectedBatch.Trainer1)
         @Html.HiddenFor(m => m.SelectedBatch.Trainer2)
-
         <div class="card">
             <div class="card-header">
                 Select Select Training Center and Batch to genrate Attendence.
@@ -27,7 +21,7 @@
                 <div class="row">
                     <div class="form-group col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label" for="BatchId">Select Training Center </label>
-                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
+                        <select class="form-control valid" id="TrainingCentersDDL" name="TrainingCentersDDL" onchange="Att.GetBatchesByCenterId()">
                             <option id="-1" value="-1"> Select Training Center</option>
                             @foreach (var trainingCenter in Model.TrainingCenters)
                             {
@@ -36,14 +30,14 @@
                                 {
                                     selected = "selected";
                                 }
-                                <option @selected value=" "> @trainingCenter.CenterName </option>
+                                <option @selected value="@trainingCenter.TrainingCenterId"> @trainingCenter.CenterName </option>
                             }
                         </select>
                     </div>
                     <div class="form-group col-md-4 col-sm-4 col-xs-12">
 
                         <label class="control-label" for="BatchId"> Select Batch Code</label>
-                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="">
+                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="Att.GetStudentsByBatchId()">
                             <option id="-1" value="-1"> Select Batchs</option>
                             @foreach (var batch in Model.Batches)
                             {
@@ -71,22 +65,17 @@
                     <div class="form-group col-4">
                         <b> TRN1 : </b>
                         @Html.Label(Model.SelectedBatch.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
-
                     </div>
                     <div class="form-group col-4">
                         <b>TRN2: </b>
                         @Html.Label(Model.SelectedBatch.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
-
-
             </div>
         </div>
-
         <div class="card">
             <div class="card-header">
                 Update Attendence    <input type="submit" value="Download CSV" class="btn btn-primary float-right" />
-
             </div>
             <div class="card-body">
                 <div class="row">
@@ -122,8 +111,72 @@
         </div>
     }
 </div>
-
-
 @section Scripts{
+    <script>
+        var Att = {
+            GetBatchesByCenterId: function () {
+                $.ajax({
+                    url: "Attendance/GetBatchesByCenterId",
+                    cache: false,
+                    data: {
+                        CenterId: $('#TrainingCentersDDL option:selected').val(),
+                    },
+
+                    success: function (batchJson) {
+                        //Next To Do :  ReDrow bach DDL from new JSON ....
+                        console.log(batchJson);
+                        $("#searchResult").html(batchJson);
+                    }
+                });
+            },
+            GetStudentsByBatchId: function () {
+                $.ajax({
+                    url: "Attendance/GetStudentsByBatchId",
+                    cache: false,
+                    data: {
+                        BatchId: $('#BatchDDL option:selected').val(),
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $("#searchResult").html(result);
+                    }
+                });
+
+            }
+        }
+    </script>
+
 
 }
+
+@*<script>
+        var Att = {
+            GetBatchesByCenterId: function () {
+                $.ajax({
+                    url: "Attendance/GetBatchesByCenterId",
+                    cache: false,
+
+                    data: {
+                        CenterId: $('#TrainingCentersDDL option:selected').val(),
+                    },
+                    success: function (data) {
+                        $("#searchResult").html(data);
+                    }
+                });
+            },
+            GetStudentsByBatchId: function () {
+                $.ajax({
+                    url: "Attendance/GetStudentsByBatchId",
+                    cache: false,
+                    data: {
+                        BatchId: $('#BatchDDL option:selected').val(),
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $("#searchResult").html(data);
+                    }
+                });
+
+            }
+        };
+    </script>*@

@@ -13,6 +13,11 @@ namespace AmsLight.Controllers
     public class AttendanceController : Controller
     {
         private AmsDbContext db = new AmsDbContext();
+        private int tpId;
+        public AttendanceController()
+        {
+            tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+        }
 
         // GET: Attendances
         public ActionResult Index(int tcId = 2, int batchId = 1)
@@ -65,5 +70,20 @@ namespace AmsLight.Controllers
 
             }
         }
+
+        public JsonResult GetBatchesByCenterId(int CenterId)
+        {
+            var batches = db.Batches.Where(b => b.TrainingCenterId == CenterId).ToList();
+
+            return Json(batches.Select(b => new { Id = b.BatchId, Time = b.StartTime.ToString() + " - " + b.EndTime.ToString() }).ToList(),
+                JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetStudentsByBatchId(int BatchId)
+        {
+            var students = db.Students.Where(b => b.BatchId == BatchId).ToList(); // add TP  filter
+                                                                                  //  from stu in students select (stu.)
+            return Json(students, JsonRequestBehavior.AllowGet);
+        }
     }
+
 }
