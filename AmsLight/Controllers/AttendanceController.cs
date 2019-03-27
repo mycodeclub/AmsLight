@@ -20,23 +20,9 @@ namespace AmsLight.Controllers
         }
 
         // GET: Attendances
-        public ActionResult Index(int tcId = 2, int batchId = 1)
+        public ActionResult Index()
         {
-            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-            Attendance att = (tcId > 0 && batchId > 0) ? new Attendance(tcId, batchId) : (tcId > 0) ? new Attendance(tcId) : new Attendance();
-            Random random = new Random();
-            att.Students.ForEach(s =>
-            {
-                s.IsPresent = true;
-                s.PunchInTime = new TimeSpan(
-                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Hours - 1, att.SelectedBatch.StartTime.Hours)),
-                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Minutes - 30, att.SelectedBatch.StartTime.Minutes + 30)),
-                   Convert.ToInt32(random.Next(1, 60)));
-                s.PunchOutTime = new TimeSpan(
-    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Hours - 1, att.SelectedBatch.EndTime.Hours)),
-    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Minutes - 30, att.SelectedBatch.EndTime.Minutes + 10)),
-    Convert.ToInt32(random.Next(1, 60)));
-            });
+            Attendance att = new Attendance();
             return View(att);
         }
 
@@ -74,15 +60,27 @@ namespace AmsLight.Controllers
         public JsonResult GetBatchesByCenterId(int CenterId)
         {
             var batches = db.Batches.Where(b => b.TrainingCenterId == CenterId).ToList();
-
-            return Json(batches.Select(b => new { Id = b.BatchId, Time = b.StartTime.ToString() + " - " + b.EndTime.ToString() }).ToList(),
+            return Json(batches.Select(b => new { Id = b.BatchId, Time = b.BatchCode + " ( " + b.StartTime.ToString() + " - " + b.EndTime.ToString() + " ) " }).ToList(),
                 JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetStudentsByBatchId(int BatchId)
+        public PartialViewResult GetStudentsByBatchId(int tcId = 2, int batchId = 1)
         {
-            var students = db.Students.Where(b => b.BatchId == BatchId).ToList(); // add TP  filter
-                                                                                  //  from stu in students select (stu.)
-            return Json(students, JsonRequestBehavior.AllowGet);
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+            Attendance att = (tcId > 0 && batchId > 0) ? new Attendance(tcId, batchId) : (tcId > 0) ? new Attendance(tcId) : new Attendance();
+            Random random = new Random();
+            att.Students.ForEach(s =>
+            {
+                s.IsPresent = true;
+                s.PunchInTime = new TimeSpan(
+                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Hours - 1, att.SelectedBatch.StartTime.Hours)),
+                   Convert.ToInt32(random.Next(att.SelectedBatch.StartTime.Minutes - 30, att.SelectedBatch.StartTime.Minutes + 30)),
+                   Convert.ToInt32(random.Next(1, 60)));
+                s.PunchOutTime = new TimeSpan(
+    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Hours - 1, att.SelectedBatch.EndTime.Hours)),
+    Convert.ToInt32(random.Next(att.SelectedBatch.EndTime.Minutes - 30, att.SelectedBatch.EndTime.Minutes + 10)),
+    Convert.ToInt32(random.Next(1, 60)));
+            });
+            return PartialView(att);
         }
     }
 

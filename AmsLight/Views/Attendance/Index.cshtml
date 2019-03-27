@@ -26,10 +26,10 @@
                             @foreach (var trainingCenter in Model.TrainingCenters)
                             {
                                 string selected = "";
-                                if (Model.SelectedTc.TrainingCenterId == trainingCenter.TrainingCenterId)
-                                {
-                                    selected = "selected";
-                                }
+                                //if (Model.SelectedTc.TrainingCenterId == trainingCenter.TrainingCenterId)
+                                //{
+                                //    selected = "selected";
+                                //}
                                 <option @selected value="@trainingCenter.TrainingCenterId"> @trainingCenter.CenterName </option>
                             }
                         </select>
@@ -53,62 +53,35 @@
                     </div>
                     <div class="form-group col-4">
                         @Html.LabelFor(model => Model.AttendancesDate)
-                        @Html.EditorFor(model => Model.AttendancesDate, new { htmlAttributes = new { @class = "form-control" } })
+                        <input class="form-control text-box single-line" data-val="true" data-val-date="The field Attendances Date must be a date." data-val-required="The Attendances Date field is required." id="AttendancesDate" name="AttendancesDate" type="date" value="@Model.AttendancesDate.ToString("yyyy-MM-dd")">
+
+                        @*@Html.EditorFor(model => Model.AttendancesDate, new { htmlAttributes = new { @class = "form-control" } })*@
                         @Html.ValidationMessageFor(model => model.AttendancesDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-4">
-                        <b> Batch Code : </b>
-                        @Html.Label(Model.SelectedBatch.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                    <div class="form-group col-4">
-                        <b> TRN1 : </b>
-                        @Html.Label(Model.SelectedBatch.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                    <div class="form-group col-4">
-                        <b>TRN2: </b>
-                        @Html.Label(Model.SelectedBatch.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
+                @*<div class="row">
+                        <div class="form-group col-4">
+                            <b> Batch Code : </b>
+                            @Html.Label(Model.SelectedBatch.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="form-group col-4">
+                            <b> TRN1 : </b>
+                            @Html.Label(Model.SelectedBatch.Trainer1, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="form-group col-4">
+                            <b>TRN2: </b>
+                            @Html.Label(Model.SelectedBatch.Trainer2, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>*@
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                Update Attendence    <input type="submit" value="Download CSV" class="btn btn-primary float-right" />
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-12">
-                        <table class="table" id="AttendanceTable">
-                            <thead>
-                                <tr>
-                                    <th>S. No. </th>
-                                    <th> Student Name </th>
-                                    <th> Candidate Code </th>
-                                    <th> IsPresent </th>
-                                    <th> Punch In Time </th>
-                                    <th> Punch Out Time </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.Students.Count; i++)
-                                {
-                                    <tr>
-                                        <td> @(i + 1).</td>
-                                        <td> @Model.Students[i].StudentName</td>
-                                        <td> @Model.Students[i].CandidateCode</td>
-                                        <td> @Html.CheckBoxFor(m => Model.Students[i].IsPresent) </td>
-                                        <td> @Html.TextBoxFor(m => Model.Students[i].PunchInTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
-                                        <td> @Html.TextBoxFor(m => Model.Students[i].PunchOutTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+
+        <div id="StudentsByBatchId">
+            @{
+                Html.RenderAction("GetStudentsByBatchId", new { tcId = 0, batchId = 0 });
+            }
         </div>
+
     }
 </div>
 @section Scripts{
@@ -123,9 +96,13 @@
                     },
 
                     success: function (batchJson) {
-                        //Next To Do :  ReDrow bach DDL from new JSON ....
+                        var html = "";
                         console.log(batchJson);
-                        $("#searchResult").html(batchJson);
+                        html += " <option value='-1'> Select Batch </option> "
+                        $.each(batchJson, function (i, item) {
+                            html += " <option value='" + item.id + "'>" + item.Time + " </option> "
+                        });
+                        $("#BatchDDL").html(html).focus();
                     }
                 });
             },
@@ -134,49 +111,23 @@
                     url: "Attendance/GetStudentsByBatchId",
                     cache: false,
                     data: {
-                        BatchId: $('#BatchDDL option:selected').val(),
+                        tcId: $('#BatchDDL option:selected').val(),
+                        batchId: $('#BatchDDL option:selected').val(),
                     },
                     success: function (result) {
                         console.log(result);
-                        $("#searchResult").html(result);
+                        $("#StudentsByBatchId").html(result).focus();
                     }
                 });
 
+            },
+            Update(isPresent) {
+                $(isPresent).parent().parent().find('input[type=time]').toggle();
+
             }
         }
+
     </script>
 
 
 }
-
-@*<script>
-        var Att = {
-            GetBatchesByCenterId: function () {
-                $.ajax({
-                    url: "Attendance/GetBatchesByCenterId",
-                    cache: false,
-
-                    data: {
-                        CenterId: $('#TrainingCentersDDL option:selected').val(),
-                    },
-                    success: function (data) {
-                        $("#searchResult").html(data);
-                    }
-                });
-            },
-            GetStudentsByBatchId: function () {
-                $.ajax({
-                    url: "Attendance/GetStudentsByBatchId",
-                    cache: false,
-                    data: {
-                        BatchId: $('#BatchDDL option:selected').val(),
-                    },
-                    success: function (result) {
-                        console.log(result);
-                        $("#searchResult").html(data);
-                    }
-                });
-
-            }
-        };
-    </script>*@
