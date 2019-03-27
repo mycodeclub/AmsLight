@@ -1,6 +1,5 @@
 MVC Ajax : https://www.youtube.com/watch?v=B59skvlroyc
-      var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-
+    cx
   ViewBag.Title = "Add Center";
   ViewBag.HeaderText = "Create New Center";
   
@@ -13,16 +12,6 @@ MVC Ajax : https://www.youtube.com/watch?v=B59skvlroyc
  	<div class="row">
  		<div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="form-group"> </div></div> </div>
-
-	</div>
-</div>
-
-
---------------------------------------------------------------------------------------------------------------------------
-REsponsiv Table
- <table class="table-responsive" id="BatchTable">
-               
-			   
 @section Scripts{
     <script src="~/vendor/datatables/jquery.dataTables.js"></script>
     <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script> 
@@ -32,6 +21,16 @@ REsponsiv Table
         });
     </script> 
 }
+	</div>
+</div>
+
+
+--------------------------------------------------------------------------------------------------------------------------
+REsponsiv Table
+ <table class="table-responsive" id="BatchTable">
+               
+			   
+
 --------------------------------------------------------------------------------------------------------------------------
  ------------------------------
  MVC Ajax

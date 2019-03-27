@@ -54,7 +54,6 @@ namespace AmsLight.Controllers
             catch
             {
                 return RedirectToAction("Index");
-
             }
         }
 

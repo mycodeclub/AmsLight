@@ -14,6 +14,7 @@ using ExcelDataReader;
 
 namespace AmsLight.Controllers
 {
+    [Authorize]
     public class BatchesController : Controller
     {
         private AmsDbContext db = new AmsDbContext();
@@ -21,7 +22,8 @@ namespace AmsLight.Controllers
         // GET: Batches
         public ActionResult Index()
         {
-            return View(db.Batches.Include("TrainingCenter").ToList());
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+            return View(db.Batches.Include("TrainingCenter").Where(b => b.TpId == tpId).ToList());
         }
 
         // GET: Batches/Details/5

@@ -14,7 +14,11 @@ namespace AmsLight.Models
         [Key]
         public int StudentId { get; set; }
         public string StudentName { get; set; }
+        [Required]
         public int BatchId { get; set; }
+        [Required]
+        public int TpId { get; set; }
+        [Required]
         public string CandidateCode { get; set; }
         public virtual Batch Batch { get; set; }
 
