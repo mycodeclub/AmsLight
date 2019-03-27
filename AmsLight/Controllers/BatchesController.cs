@@ -20,10 +20,21 @@ namespace AmsLight.Controllers
         private AmsDbContext db = new AmsDbContext();
 
         // GET: Batches
-        public ActionResult Index()
+        public ActionResult Index(int? tcId)
         {
+            ViewBag.SelectedCenterId = 0;
             var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-            return View(db.Batches.Include("TrainingCenter").Where(b => b.TpId == tpId).ToList());
+            ViewBag.TrainingCenters = db.TrainingCenters.Where(tc => tc.TpId == tpId).ToList();
+
+            ViewBag.BatcheId = new SelectList(db.Batches.Where(b => b.TpId == tpId).ToList(), "BatchId", "BatchCode");
+            List<Batch> batches;
+            if (tcId.HasValue)
+            {
+                batches = db.Batches.Include("TrainingCenter").Where(b => b.TpId == tpId && b.TrainingCenterId == tcId.Value).ToList();
+                ViewBag.SelectedCenterId = tcId.Value;
+            }
+            else batches = new List<Batch>();
+            return View(batches);
         }
 
         // GET: Batches/Details/5

@@ -1,4 +1,21 @@
+
 MVC Ajax : https://www.youtube.com/watch?v=B59skvlroyc
+var             tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+------------------------------------------------------------------------------------------------------------------------------------
+ViewBag.BatcheId = new SelectList(db.Batches.Where(b => b.TrainingCenterId == tcId && b.TpId == tpId).ToList(), "BatchId", "BatchCode");
+            ViewBag.TrainingCenterId = new SelectList(db.TrainingCenters, "TrainingCenterId", "CenterCode");
+
+
+  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BatcheId, "BatcheId", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("BatcheId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BatcheId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+------------------------------------------------------------------------------------------------------------------------------------
+
     cx
   ViewBag.Title = "Add Center";
   ViewBag.HeaderText = "Create New Center";
