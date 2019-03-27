@@ -30,9 +30,10 @@ namespace AmsLight.Controllers
         {
             try
             {
+                att.SelectedBatch = db.Batches.Find(att.SelectedBatch.BatchId);
+                att.SelectedTc = db.TrainingCenters.Find(att.SelectedTc.TrainingCenterId);
                 var csv = new StringBuilder();
                 int count = 3;
-                var TRN2 = "20185753161";
                 var CandidateCode = string.Empty; // Populated by Excel
                 var attendancesDate = att.AttendancesDate.Year.ToString() + att.AttendancesDate.Month.ToString() + att.AttendancesDate.Day.ToString();
                 csv.Append("FH^1^1.0.0^TP^12^2018121719:42:38+0530^45^34173cb38f07f89ddbebc2ac9128303f\n");

@@ -21,32 +21,21 @@
                 <div class="row">
                     <div class="form-group col-md-4 col-sm-4 col-xs-12">
                         <label class="control-label" for="BatchId">Select Training Center </label>
-                        <select class="form-control valid" id="TrainingCentersDDL" name="TrainingCentersDDL" onchange="Att.GetBatchesByCenterId()">
+                        <select class="form-control valid" id="TrainingCentersDDL" name="SelectedTc.TrainingCenterId" onchange="Att.GetBatchesByCenterId()">
                             <option id="-1" value="-1"> Select Training Center</option>
                             @foreach (var trainingCenter in Model.TrainingCenters)
                             {
-                                string selected = "";
-                                //if (Model.SelectedTc.TrainingCenterId == trainingCenter.TrainingCenterId)
-                                //{
-                                //    selected = "selected";
-                                //}
-                                <option @selected value="@trainingCenter.TrainingCenterId"> @trainingCenter.CenterName </option>
+                                <option value="@trainingCenter.TrainingCenterId"> @trainingCenter.CenterName </option>
                             }
                         </select>
                     </div>
                     <div class="form-group col-md-4 col-sm-4 col-xs-12">
-
                         <label class="control-label" for="BatchId"> Select Batch Code</label>
-                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="Att.GetStudentsByBatchId()">
+                        <select class="form-control valid" id="BatchDDL" name="SelectedBatch.BatchId" onchange="Att.GetStudentsByBatchId()">
                             <option id="-1" value="-1"> Select Batchs</option>
                             @foreach (var batch in Model.Batches)
                             {
-                                string selected = "";
-                                if (Model.SelectedBatch.BatchId == batch.BatchId)
-                                {
-                                    selected = "selected";
-                                }
-                                <option @selected value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
+                                <option value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
                             }
                         </select>
 
@@ -100,7 +89,7 @@
                         console.log(batchJson);
                         html += " <option value='-1'> Select Batch </option> "
                         $.each(batchJson, function (i, item) {
-                            html += " <option value='" + item.id + "'>" + item.Time + " </option> "
+                            html += " <option value='" + item.Id + "'>" + item.Time + " </option> "
                         });
                         $("#BatchDDL").html(html).focus();
                     }
