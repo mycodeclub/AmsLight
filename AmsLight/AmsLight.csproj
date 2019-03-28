@@ -3300,6 +3300,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Common\Secure.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\BatchesController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
