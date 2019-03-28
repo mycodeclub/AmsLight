@@ -65,11 +65,11 @@ namespace AmsLight.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BatchId,BatchCode,Center,StartTime,EndTime,Trainer1,Trainer2,StartDate,CreateDate,EndDate")] Batch batch)
+        public ActionResult Create(Batch batch)
         {
-
             if (ModelState.IsValid)
             {
+                batch.TpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
                 batch.CreateDate = System.DateTime.Now;
                 db.Batches.Add(batch);
                 db.SaveChanges();

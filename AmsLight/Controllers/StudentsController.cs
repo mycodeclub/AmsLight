@@ -44,7 +44,8 @@ namespace AmsLight.Controllers
         // GET: Students/Create
         public ActionResult Create(int? id = 0) // Batch Id
         {
-            ViewBag.Students = db.Students.Where(s => s.BatchId == id.Value).ToList();
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+            ViewBag.Students = db.Students.Where(s => s.BatchId == id.Value && s.TpId.Equals(tpId)).ToList();
             return View(new CandidateExcel() { BatchId = id.Value });
         }
 
@@ -85,15 +86,16 @@ namespace AmsLight.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentId,StudentName,BatchId,CandidateCode,PunchOutTime,IsPresent")] Student student)
+        public ActionResult Edit(Student student)
         {
-
             if (ModelState.IsValid)
             {
                 var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-                student.TpId.Equals(tpId);
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
+                if (student.TpId.Equals(tpId))
+                {
+                    db.Entry(student).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.BatchId = new SelectList(db.Batches, "BatchId", "BatchCode", student.BatchId);
@@ -107,8 +109,9 @@ namespace AmsLight.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
             Student student = db.Students.Find(id);
-            if (student == null)
+            if (student == null && !student.Equals(tpId))
             {
                 return HttpNotFound();
             }
@@ -127,6 +130,7 @@ namespace AmsLight.Controllers
         public bool UpdateCandidateExcel(CandidateExcel ce)
         {
             bool isSavedSuccessfully = false;
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
 
             if (ModelState.IsValid)
             {
@@ -150,6 +154,7 @@ namespace AmsLight.Controllers
                                     BatchId = ce.BatchId,
                                     CandidateCode = ds.Tables["Sheet1"].Rows[i][1].ToString(),
                                     StudentName = ds.Tables["Sheet1"].Rows[i][2].ToString(),
+                                    TpId = tpId,
                                 });
                             }
                             if (db.Students.Any(s => s.BatchId == ce.BatchId))
