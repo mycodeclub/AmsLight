@@ -4,36 +4,39 @@
     ViewBag.HeaderText = "Create Batche";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-
     <div class="card">
         <div class="card-header"> Enter Batch Details </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
                         @Html.LabelFor(model => model.TrainingCenterId, "TrainingCenterId", htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownList("TrainingCenterId", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.TrainingCenterId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
                         @Html.LabelFor(model => model.BatchCode, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.BatchCode, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.BatchCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

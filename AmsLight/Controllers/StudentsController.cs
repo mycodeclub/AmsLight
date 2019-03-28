@@ -18,21 +18,28 @@ namespace AmsLight.Controllers
         private AmsDbContext db = new AmsDbContext();
 
         // GET: Students
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? centerId, int? batchId)
         {
-            var students = new List<Student>();
-            if (id != null)
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+            ViewBag.TrainingCenters = db.TrainingCenters.Where(tc => tc.TpId == tpId).ToList();
+            ViewBag.selectedTrainingCenteId = 0;
+            ViewBag.selectedBatchId = 0;
+            if (centerId.HasValue)
             {
-                students = db.Students.Where(s => s.BatchId == id.Value).ToList();
-                ViewBag.BatchId = id.Value;
-
+                ViewBag.Batches = db.Batches.Where(b => b.TpId == tpId && b.TrainingCenterId.Equals(centerId.Value)).ToList();
+                ViewBag.selectedTrainingCenteId = centerId.Value;
             }
-            else { ViewBag.BatchId = 0; }
-            var batches = db.Batches.ToList();
-            ViewBag.Batches = db.Batches.ToList();
+            var students = new List<Student>();
+            if (batchId.HasValue)
+            {
+                students = db.Students.Where(s =>
+                                                batchId.Value.Equals(s.BatchId)
+                                                && tpId.Equals(s.TpId)
+                                             ).ToList();
+                ViewBag.selectedBatchId = batchId.Value;
+            }
             return View(students);
         }
-
 
         // GET: Students/Create
         public ActionResult Create(int? id = 0) // Batch Id
@@ -52,19 +59,20 @@ namespace AmsLight.Controllers
             ViewBag.isSaved = isSaved;
             ViewBag.selectedBatchId = ce.BatchId;
             ViewBag.Students = db.Students.Where(s => s.BatchId == ce.BatchId).ToList();
-
             return View(ce);
         }
 
         // GET: Students/Edit/5
         public ActionResult Edit(int? id)
         {
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Student student = db.Students.Find(id);
-            if (student == null)
+            if (student == null || !student.TpId.Equals(tpId))
             {
                 return HttpNotFound();
             }
@@ -79,8 +87,11 @@ namespace AmsLight.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "StudentId,StudentName,BatchId,CandidateCode,PunchOutTime,IsPresent")] Student student)
         {
+
             if (ModelState.IsValid)
             {
+                var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+                student.TpId.Equals(tpId);
                 db.Entry(student).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -104,17 +115,6 @@ namespace AmsLight.Controllers
             return View(student);
         }
 
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,9 +123,6 @@ namespace AmsLight.Controllers
             }
             base.Dispose(disposing);
         }
-
-
-
 
         public bool UpdateCandidateExcel(CandidateExcel ce)
         {
@@ -170,6 +167,5 @@ namespace AmsLight.Controllers
             }
             return isSavedSuccessfully;
         }
-
     }
 }

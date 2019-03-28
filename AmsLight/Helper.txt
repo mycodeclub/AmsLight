@@ -67,3 +67,16 @@ REsponsiv Table
 
       InsertionMode = InsertionMode.Replace // Replace the existing contents
     })
+	
+	
+========================================================================================
+	
+Display Date : @Model.EndDate.ToString("yyyy-MM-dd") 
+	
+========================================================================================
+Create DDL 
+
+Controler                      
+		var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+		ViewBag.TrainingCenters = db.TrainingCenters.Where(tc => tc.TpId == tpId).ToList();
+			 

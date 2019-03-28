@@ -5,7 +5,10 @@
     ViewBag.HeaderText = "Manage Students";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<AmsLight.Models.Batch> batches = ViewBag.Batches;
-    int selectedBatchId = ViewBag.BatchId;
+    List<AmsLight.Models.TrainingCenter> trainingCenters = ViewBag.TrainingCenters;
+
+    int selectedBatchId = ViewBag.selectedBatchId;
+    int selectedTrainingCenteId = ViewBag.selectedTrainingCenteId;
 
 }
 
@@ -14,13 +17,32 @@
     <div class="card-header">  Select Batch To List Down the Students </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-group">
-                        <label class="control-label" for="BatchId"> Batch Code</label>
-                        <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="window.location.href='/students/index/'+   $('#BatchDDL option:selected').val()">
-                            <option id="-1" value="-1"> Select Batchs</option>
-                            @foreach (var batch in batches)
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label" for="BatchId"> Center </label>
+                    <select class="form-control valid" id="trainingCentersDDL" name="trainingCentersDDL" onchange="window.location.href='/students/index?centerId='+   $('#trainingCentersDDL option:selected').val()">
+                        <option id="-1" value="-1"> Select Batchs</option>
+                        @foreach (var center in trainingCenters)
+                        {
+                            string selected = "";
+                            if (selectedTrainingCenteId == center.TrainingCenterId)
+                            {
+                                selected = "selected";
+                            }
+                            <option @selected value="@center.TrainingCenterId"> @center.CenterName ( @center.CenterCode ) </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label" for="BatchId"> Batch Code</label>
+                    <select class="form-control valid" id="BatchDDL" name="BatchDDL" onchange="window.location.href = '/students/index/?centerId=' + $('#trainingCentersDDL option:selected').val() + '&batchId=' + $('#BatchDDL option:selected').val()">
+                        <option id="-1" value="-1"> Select Batchs</option>
+
+                        @if (batches != null)
+                        {
+                            foreach (var batch in batches)
                             {
                                 string selected = "";
                                 if (selectedBatchId == batch.BatchId)
@@ -29,63 +51,63 @@
                                 }
                                 <option @selected value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
                             }
-                        </select>
-                    </div>
-                </div>
-                @if (selectedBatchId != 0)
-                {
-                    <center>
-                        <div id="UploadStudentsExcell" class="col-md-2 col-sm-2 col-xs-12 ">
-                            <div class="form-group">
-                                <input type="button" value="Upload Students Excell" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />
-                            </div>
-                        </div>
-                    </center>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Student Name </th>
-                                    <th>Candidate Code</th>
-                                    <th> </th>
-                            </thead>
-                            <tbody>
-                                @if (!Model.Any())
-                                {
-                                    <tr>
-                                        <td colspan="3">
-                                            <center> No Students</center>
-                                        </td>
-                                    </tr>
-                                }
 
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.StudentName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.CandidateCode)
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.StudentId }) |
-                                            @Html.ActionLink("Details", "Details", new { id = item.StudentId }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.StudentId })
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <th>Student Name </th>
-                                    <th>Candidate Code</th>
-                                    <th> </th>
-                            </tbody>
-                        </table>
-                    </div>
-                }
+                        }
+                    </select>
+                </div>
             </div>
+            @if (selectedBatchId != 0)
+            {
+                <center>
+                    <div id="UploadStudentsExcell" class="col-md-2 col-sm-2 col-xs-12 ">
+                        <div class="form-group">
+                            <input type="button" value="Upload Students Excell To This Batch" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />
+                        </div>
+                    </div>
+                </center>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Student Name </th>
+                                <th>Candidate Code</th>
+                                <th> </th>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="3">
+                                        <center> No Students</center>
+                                    </td>
+                                </tr>
+                            }
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StudentName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CandidateCode)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.StudentId })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>Student Name </th>
+                                <th>Candidate Code</th>
+                                <th> </th>
+                        </tbody>
+                    </table>
+                </div>
+            }
+
         </div>
     </div>
 </div>

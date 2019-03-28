@@ -55,6 +55,7 @@ namespace AmsLight.Controllers
         // GET: Batches/Create
         public ActionResult Create()
         {
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
             ViewBag.TrainingCenterId = new SelectList(db.TrainingCenters, "TrainingCenterId", "CenterCode");
             return View();
         }
@@ -64,8 +65,9 @@ namespace AmsLight.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BatchId,BatchCode,Center,StartTime,EndTime,Trainer1,Trainer2,StartDate,CreateDate")] Batch batch)
+        public ActionResult Create([Bind(Include = "BatchId,BatchCode,Center,StartTime,EndTime,Trainer1,Trainer2,StartDate,CreateDate,EndDate")] Batch batch)
         {
+
             if (ModelState.IsValid)
             {
                 batch.CreateDate = System.DateTime.Now;
