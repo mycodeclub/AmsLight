@@ -1,0 +1,31 @@
+      public ActionResult GetTree()
+	  private Datum DrowTree()
+        {  
+			Datum Tree = DrowTree(db.Data.ToList());
+			Datum GrandParent = db.Data.Where(d => d.ParentId == 0).SingleOrDefault();
+            dataList.Remove(GrandParent);
+            while (!dataList.All(dl => dl.ParentId == GrandParent.Id))
+            {
+                for (int i = 0; i < dataList.Count; i++)
+                {
+                    var thisItem = dataList[i];
+                    for (int j = 0; j < dataList.Count; j++)
+                    {
+                        if (thisItem.ParentId.Equals(dataList[j].Id))
+                        {
+                            if (dataList[j].Nodes == null) { dataList[j].Nodes = new List<Datum>(); }
+                            dataList[j].Nodes.Add(thisItem);
+                            dataList.Remove(thisItem);
+                            break;
+                        }
+                    }
+                }
+            }
+            GrandParent.Nodes = dataList;
+            return GrandParent;
+			
+			     return Json(GrandParent, JsonRequestBehavior.AllowGet);
+       
+        }
+
+		
