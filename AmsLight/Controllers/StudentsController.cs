@@ -167,7 +167,8 @@ namespace AmsLight.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ce.Message = ex.Message;
+                    ModelState.AddModelError("File", "Invalid Excel : " + ex.Message);
+
                 }
             }
             return isSavedSuccessfully;

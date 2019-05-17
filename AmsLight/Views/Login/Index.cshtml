@@ -21,26 +21,27 @@
                             <div class="col-md-9 col-lg-8 mx-auto">
 
                                 @using (Html.BeginForm("Index", "Login", FormMethod.Post))
-                                {@Html.AntiForgeryToken()
+                                {
+                                    @Html.AntiForgeryToken()
 
-                                <div class="form-label-group">
-                                    <input type="text" id="UserName" name="UserName" class="form-control" placeholder="LoginId" required autofocus value="@Model.UserName">
-                                    <label for="inputEmail">Login Id </label>
-                                </div>
-                                <div class="form-label-group">
-                                    <input type="password" id="Password" name="Password" class="form-control" placeholder="Password" required value="@Model.Password">
-                                    <label for="inputPassword">Password</label>
-                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="custom-control custom-checkbox mb-3">
-                                    <input type="checkbox" class="custom-control-input" name="RememberMe" id="RememberMe">
-                                    <label class="custom-control-label" for="RememberMe">Remember password</label>
-                                </div>
-                                <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
-                                <div class="text-center">
-                                    <a class="small" href="#">Forgot password?</a>
-                                </div>
-                            }
+                                    <div class="form-label-group">
+                                        <input type="text" id="UserName" name="UserName" class="form-control" placeholder="LoginId" required autofocus value="@Model.UserName">
+                                        <label for="inputEmail">Login Id </label>
+                                    </div>
+                                    <div class="form-label-group">
+                                        <input type="password" id="Password" name="Password" class="form-control" placeholder="Password" required value="@Model.Password">
+                                        <label for="inputPassword">Password</label>
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox" class="custom-control-input" name="RememberMe" id="RememberMe">
+                                        <label class="custom-control-label" for="RememberMe">Remember password</label>
+                                    </div>
+                                    <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
+                                    <div class="text-center">
+                                        <a class="small" href="#">Forgot password?</a>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

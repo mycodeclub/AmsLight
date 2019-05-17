@@ -27,7 +27,7 @@
                             <tr>
                                 <td> @(i + 1).</td>
                                 <td> @Model.Students[i].StudentName</td>
-                                <td> @Model.Students[i].CandidateCode</td>
+                                <td> @Model.Students[i].CandidateCode @Html.HiddenFor(m => Model.Students[i].CandidateCode) @Html.HiddenFor(m => Model.Students[i].StudentId)</td>
                                 <td> @Html.CheckBoxFor(m => Model.Students[i].IsPresent, new { @onchange = "Att.Update($(this))" }) </td>
                                 <td> @Html.TextBoxFor(m => Model.Students[i].PunchInTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
                                 <td> @Html.TextBoxFor(m => Model.Students[i].PunchOutTime, new { @class = "form-control text-box single-line", @type = "time" }) </td>
