@@ -50,7 +50,7 @@ namespace AmsLight.Controllers
                     if (count == 3) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer1 + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
                     else if (count == 4) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer2 + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
                     else if (stu.IsPresent) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
-                    else csv.Append("BD^" + count + "^ " + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^A^^\n");
+                    else csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^A^^\n");
                     count++;
                 }
                 System.IO.File.WriteAllText("D:/StudentAtt.csv", csv.ToString());
