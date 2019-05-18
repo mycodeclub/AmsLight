@@ -43,20 +43,29 @@ namespace AmsLight.Controllers
                 var attendancesDate = att.AttendancesDate.Year.ToString() + FormatToTwoDigit(att.AttendancesDate.Month) + FormatToTwoDigit(att.AttendancesDate.Day);
                 csv.Append("FH^1^1.0.0^TP^12^" + attDownloadTime.Year + FormatToTwoDigit(attDownloadTime.Month) + FormatToTwoDigit(attDownloadTime.Day) + FormatToTwoDigit(attDownloadTime.Hour) + ":" + FormatToTwoDigit(attDownloadTime.Minute) + ":" + FormatToTwoDigit(attDownloadTime.Second) + "+0530^45^" + machineId + "\n");
                 csv.Append("BH^2^TPC^" + att.SelectedTc.CenterCode + "\n");
+                //--------------------- Find some better approch to populate Punch IN OUT time for Trainer .... ...............
+                var T1punchIn = attendancesDate + FormatToTwoDigit(att.SelectedBatch.StartTime.Hours) + ":" + FormatToTwoDigit(random.Next(att.SelectedBatch.StartTime.Minutes - 10, att.SelectedBatch.StartTime.Minutes + 5)) + ":" + FormatToTwoDigit(random.Next(1, 59));
+                var T1punchOut = attendancesDate + FormatToTwoDigit(att.SelectedBatch.EndTime.Hours) + ":" + FormatToTwoDigit(random.Next(att.SelectedBatch.EndTime.Minutes + 15, att.SelectedBatch.EndTime.Minutes + 29)) + ":" + FormatToTwoDigit(random.Next(1, 59));
+                var T2punchIn = attendancesDate + FormatToTwoDigit(att.SelectedBatch.StartTime.Hours) + ":" + FormatToTwoDigit(random.Next(att.SelectedBatch.StartTime.Minutes - 10, att.SelectedBatch.StartTime.Minutes + 5)) + ":" + FormatToTwoDigit(random.Next(1, 59));
+                var T2punchOut = attendancesDate + FormatToTwoDigit(att.SelectedBatch.EndTime.Hours) + ":" + FormatToTwoDigit(random.Next(att.SelectedBatch.EndTime.Minutes + 15, att.SelectedBatch.EndTime.Minutes + 29)) + ":" + FormatToTwoDigit(random.Next(1, 59));
+                //--------------------- Find some better approch to populate Punch IN OUT time for Trainer .... ...............
+
+                csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer1 + "^P^" + attendancesDate + "^" + T1punchIn + "+0530^" + T1punchOut + "+0530\n");
+                csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer2 + "^P^" + attendancesDate + "^" + T2punchIn + "+0530^" + T2punchOut + "+0530\n");
                 foreach (var stu in att.Students)
                 {
                     var punchInTime = attendancesDate + FormatToTwoDigit(stu.PunchInTime.Hours) + ":" + FormatToTwoDigit(stu.PunchInTime.Minutes) + ":" + FormatToTwoDigit(stu.PunchInTime.Seconds);
                     var punchOutTime = attendancesDate + FormatToTwoDigit(stu.PunchOutTime.Hours) + ":" + FormatToTwoDigit(stu.PunchOutTime.Minutes) + ":" + FormatToTwoDigit(stu.PunchOutTime.Seconds);
-                    if (count == 3) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer1 + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
-                    else if (count == 4) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^" + "TRN^" + att.SelectedBatch.Trainer2 + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
-                    else if (stu.IsPresent) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530\n");
-                    else csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^A^^\n");
+                    if (stu.IsPresent) csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^P^" + attendancesDate + "^" + punchInTime + "+0530^" + punchOutTime + "+0530");
+                    else csv.Append("BD^" + count + "^" + att.SelectedBatch.BatchCode + "^A^CAN^" + stu.CandidateCode + "^A^^");
+                    if (!att.Students.Last().CandidateCode.Equals(stu.CandidateCode))
+                        csv.Append("\n");
                     count++;
                 }
                 System.IO.File.WriteAllText("D:/StudentAtt.csv", csv.ToString());
                 return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
             }
-            catch
+            catch (Exception ex)
             {
                 return RedirectToAction("Index");
             }
@@ -91,6 +100,7 @@ namespace AmsLight.Controllers
 
         private string FormatToTwoDigit(string num)
         {
+            if (num.Contains('.')) { num = num.Split('.').First(); }
             return Convert.ToInt32(num).ToString("00");
         }
         private string FormatToTwoDigit(int num)
