@@ -89,7 +89,7 @@
                                     @Html.DisplayFor(modelItem => item.StartDate)
                                 </td>
                                 <td>
-                                    <a href="/Students/Index/@item.BatchId">Students</a> |
+                                    <a href="/Students/Index/?batchId=@item.BatchId&centerId=@item.TrainingCenterId">Students</a> |
                                     @Html.ActionLink("Edit Batch", "Edit", new { id = item.BatchId }) |
                                     @Html.ActionLink("View Batch", "Details", new { id = item.BatchId })
                                 </td>
