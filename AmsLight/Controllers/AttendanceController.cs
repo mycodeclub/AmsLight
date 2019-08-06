@@ -19,14 +19,12 @@ namespace AmsLight.Controllers
         {
             tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
         }
-
         // GET: Attendances
         public ActionResult Index()
         {
             Attendance att = new Attendance();
             return View(att);
         }
-
         public ActionResult DownloadCSV(Attendance att)
         {
             Random r = new Random();
@@ -62,7 +60,8 @@ namespace AmsLight.Controllers
                         csv.Append("\n");
                     count++;
                 }
-                System.IO.File.WriteAllText("D:/StudentAtt.csv", csv.ToString());
+                var fileName = att.SelectedTc.TrainingCenterId + "_" + att.SelectedBatch.BatchId + "_" + attendancesDate;
+                System.IO.File.WriteAllText(Server.MapPath("~") + "/SavedAtt/" + fileName + ".csv", csv.ToString());
                 return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
             }
             catch (Exception ex)
@@ -70,7 +69,31 @@ namespace AmsLight.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult DownloadPreviousAttendance()
+        {
+            Attendance att = new Attendance();
+            return View(att);
 
+        }
+
+        public ActionResult DownloadPreviousAttCsv(FormCollection fc)
+        {
+            var trainingCenterId = fc["SelectedTc.TrainingCenterId"];
+            var batchId = fc["SelectedBatch.BatchId"];
+            var date = Convert.ToDateTime(fc["AttendancesDate"]);
+            var attendancesDate = date.Year.ToString() + FormatToTwoDigit(date.Month) + FormatToTwoDigit(date.Day);
+
+            try
+            {
+                var fileName = trainingCenterId + "_" + batchId + "_" + attendancesDate;
+                var csv = System.IO.File.ReadAllText(Server.MapPath("~") + "/SavedAtt/" + fileName + ".csv");
+                return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404, "Att Not Generated");
+            }
+        }
         public JsonResult GetBatchesByCenterId(int CenterId)
         {
             var batches = db.Batches.Where(b => b.TrainingCenterId == CenterId).ToList();
@@ -97,7 +120,6 @@ namespace AmsLight.Controllers
 
             return PartialView(att);
         }
-
         private string FormatToTwoDigit(string num)
         {
             if (num.Contains('.')) { num = num.Split('.').First(); }
