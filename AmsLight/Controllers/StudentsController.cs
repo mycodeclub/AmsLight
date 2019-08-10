@@ -147,13 +147,15 @@ namespace AmsLight.Controllers
                             DataSet ds = excelReader.AsDataSet();
                             stream.Close();
                             var students = new List<Student>();
-                            for (int i = 1; i < ds.Tables["Sheet1"].Rows.Count; i++)
+                            var fileName = "Demo";
+                            // var fileName = "Sheet1";
+                            for (int i = 1; i < ds.Tables[fileName].Rows.Count; i++)
                             {
                                 students.Add(new Student()
                                 {
                                     BatchId = ce.BatchId,
-                                    CandidateCode = ds.Tables["Sheet1"].Rows[i][1].ToString(),
-                                    StudentName = ds.Tables["Sheet1"].Rows[i][2].ToString(),
+                                    CandidateCode = ds.Tables[fileName].Rows[i][1].ToString(),
+                                    StudentName = ds.Tables[fileName].Rows[i][2].ToString(),
                                     TpId = tpId,
                                 });
                             }
@@ -173,5 +175,37 @@ namespace AmsLight.Controllers
             }
             return isSavedSuccessfully;
         }
+
+
+        //-----------------------------------------------------------------------------------------
+
+        // GET: StudentsNew/AddNewStudent
+        public ActionResult AddNewStudent(int CenterId, int BatchId)
+        {
+            TempData["CenterId"] = CenterId;
+            TempData["BatchId"] = BatchId;
+            ViewBag.BatchId = new SelectList(db.Batches, "BatchId", "BatchCode");
+
+            return View();
+        }// POST: StudentsNew/AddNewStudent
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddNewStudent([Bind(Include = "StudentId,StudentName,Father_Husband_Name,Gender,Address,MobileNo,AadhaarId,BatchId,CandidateCode")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                student.BatchId = Convert.ToInt32(TempData["BatchId"]);
+                student.TpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+                db.Students.Add(student);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.BatchId = new SelectList(db.Batches, "BatchId", "BatchCode", student.BatchId);
+            return View(student);
+        }
+
     }
 }

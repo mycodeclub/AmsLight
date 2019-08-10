@@ -14,11 +14,23 @@ namespace AmsLight.Models
         [Key]
         public int StudentId { get; set; }
         public string StudentName { get; set; }
+
+        [DisplayName("Father Name")]
+        public string Father_Husband_Name { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Address { get; set; }
+        public string MobileNo { get; set; }
+        public string AadhaarId { get; set; }
+
+
         [Required]
         public int BatchId { get; set; }
         [Required]
         public int TpId { get; set; }
         [Required]
+        [DisplayName("Candidate Code")]
         public string CandidateCode { get; set; }
         public virtual Batch Batch { get; set; }
 
@@ -37,7 +49,6 @@ namespace AmsLight.Models
 
         [Required]
         [NotMapped]
-
         public bool IsPresent { get; set; }
 
     }

@@ -1,0 +1,97 @@
+﻿@model AmsLight.Models.Student
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Batch.BatchCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Batch.BatchCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Father_Husband_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Father_Husband_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MobileNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MobileNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AadhaarId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AadhaarId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TpId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TpId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CandidateCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CandidateCode)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

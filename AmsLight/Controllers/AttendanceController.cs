@@ -66,6 +66,7 @@ namespace AmsLight.Controllers
             }
             catch (Exception ex)
             {
+                var msg = ex.Message;
                 return RedirectToAction("Index");
             }
         }
@@ -91,7 +92,7 @@ namespace AmsLight.Controllers
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(404, "Att Not Generated");
+                return new HttpStatusCodeResult(404, "Att Not Generated"+ ex.Message);
             }
         }
         public JsonResult GetBatchesByCenterId(int CenterId)

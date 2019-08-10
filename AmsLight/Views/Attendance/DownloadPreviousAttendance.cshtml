@@ -1,0 +1,110 @@
+﻿@model AmsLight.Models.Attendance
+@{
+    ViewBag.Title = "Attendence";
+    ViewBag.HeaderText = "Update Attendence";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    @using (Html.BeginForm("DownloadPreviousAttCsv", "Attendance", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.SelectedBatch.BatchCode)
+        @Html.HiddenFor(m => m.SelectedBatch.Trainer1)
+        @Html.HiddenFor(m => m.SelectedBatch.Trainer2)
+        <div class="card">
+            <div class="card-header">
+                Select Select Training Center and Batch to genrate Attendence.
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label" for="BatchId">Select Training Center </label>
+                        <select class="form-control valid" id="TrainingCentersDDL" name="SelectedTc.TrainingCenterId" onchange="Att.GetBatchesByCenterId()">
+                            <option id="-1" value="-1"> Select Training Center</option>
+                            @foreach (var trainingCenter in Model.TrainingCenters)
+                            {
+                                <option value="@trainingCenter.TrainingCenterId"> @trainingCenter.CenterName </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                        <label class="control-label" for="BatchId"> Select Batch Code</label>
+                        <select class="form-control valid" id="BatchDDL" name="SelectedBatch.BatchId" onchange="Att.GetStudentsByBatchId()">
+                            <option id="-1" value="-1"> Select Batchs</option>
+                            @foreach (var batch in Model.Batches)
+                            {
+                                <option value="@batch.BatchId"> @batch.BatchCode ( @batch.StartTime - @batch.EndTime) </option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group col-4">
+                        @Html.LabelFor(model => Model.AttendancesDate)
+                        <input class="form-control text-box single-line" data-val="true" data-val-date="The field Attendances Date must be a date." data-val-required="The Attendances Date field is required." id="AttendancesDate" name="AttendancesDate" type="date" value="@Model.AttendancesDate.ToString("yyyy-MM-dd")">
+
+                        @Html.ValidationMessageFor(model => model.AttendancesDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-12">
+                           
+                                <input type="submit" value="Download CSV" class="btn btn-primary float-right" />
+                             </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    }
+</div>
+@section Scripts{
+    <script>
+        var Att = {
+            GetBatchesByCenterId: function () {
+                $.ajax({
+                    url: "/Attendance/GetBatchesByCenterId",
+                    cache: false,
+                    data: {
+                        CenterId: $('#TrainingCentersDDL option:selected').val(),
+                    },
+
+                    success: function (batchJson) {
+                        var html = "";
+                        console.log(batchJson);
+                        html += " <option value='-1'> Select Batch </option> "
+                        $.each(batchJson, function (i, item) {
+                            html += " <option value='" + item.Id + "'>" + item.Time + " </option> "
+                        });
+                        $("#BatchDDL").html(html).focus();
+                    }
+                });
+            },
+            GetStudentsByBatchId: function () {
+                $.ajax({
+                    url: "Attendance/GetStudentsByBatchId",
+                    cache: false,
+                    data: {
+                        tcId: $('#BatchDDL option:selected').val(),
+                        batchId: $('#BatchDDL option:selected').val(),
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        $("#StudentsByBatchId").html(result).focus();
+                    }
+                });
+
+            },
+            Update(isPresent) {
+                $(isPresent).parent().parent().find('input[type=time]').toggle();
+
+            }
+        }
+
+    </script>
+
+
+}

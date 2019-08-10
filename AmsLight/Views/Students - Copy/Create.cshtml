@@ -1,0 +1,91 @@
+﻿@model AmsLight.Models.CandidateExcel
+
+@{
+    ViewBag.Title = "Upload Excel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.HeaderText = "Upload Student Excel ";
+    List<AmsLight.Models.Student> students = ViewBag.Students;
+    List<AmsLight.Models.Batch> batches = ViewBag.Batches;
+}
+
+
+
+<div id="ExcelUpload" class="container">
+    <div class="card">
+        <div class="card-header">  Upload Students Excell  || NOTE: While uploading new Excell You are overriding the existing list of candidates.</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        @using (Html.BeginForm("Create", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.BatchId)
+                            <div class="form-horizontal">
+                                @Html.TextBoxFor(model => model.File, new { type = "file", @style = "padding-top: 5px;", onchange = "" })
+                                <input class="btn btn-success pull-center" type="submit" value="Upload" />
+                                <br />
+                                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header"> List Of Students ( Candidate  )</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    @if (ViewBag.isSaved != null && ViewBag.isSaved)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Students Imported Successfully | Following is the students list.
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">S. No.</th>
+                                    <th style="width:20%">Name</th>
+                                    <th style="width:20%">Candidate Code</th>
+                                </tr>
+                            </thead>
+                            @for (int i = 0; i < students.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @(i + 1)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(m => students[i].StudentId)
+                                        <div class="form-group">
+                                            @Html.Label(students[i].StudentName, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.Label(students[i].CandidateCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

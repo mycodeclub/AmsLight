@@ -104,7 +104,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="css\bootstrap-datetimepicker.css" />
     <Content Include="css\sb-admin-2.css" />
     <Content Include="css\sb-admin-2.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -168,6 +167,7 @@
     <Content Include="HomePageElements\jquery\jquery.min.map" />
     <Content Include="HomePageElements\jquery\jquery.slim.min.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="HomePageElements\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="HomePageElements\bootstrap\js\bootstrap.bundle.min.js" />
@@ -1738,7 +1738,6 @@
     <Content Include="HomePageElements\magnific-popup\magnific-popup.css" />
     <Content Include="img\loginPage.jpeg" />
     <Content Include="img\undraw_posting_photo.svg" />
-    <Content Include="js\bootstrap-datetimepicker.min.js" />
     <Content Include="js\demo\chart-area-demo.js" />
     <Content Include="js\demo\chart-bar-demo.js" />
     <Content Include="js\demo\chart-pie-demo.js" />
@@ -3310,6 +3309,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\StudentsNewController.cs" />
     <Compile Include="Controllers\TrainingCentersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3489,6 +3489,19 @@
     <Content Include="Views\Attendance\Index.cshtml" />
     <Content Include="Views\Attendance\GetStudentsByBatchId.cshtml" />
     <Content Include="Views\Attendance\DownloadPreviousAttendance.cshtml" />
+    <Content Include="Views\StudentsNew\Create.cshtml" />
+    <Content Include="Views\StudentsNew\Delete.cshtml" />
+    <Content Include="Views\StudentsNew\Details.cshtml" />
+    <Content Include="Views\StudentsNew\Edit.cshtml" />
+    <Content Include="Views\StudentsNew\Index.cshtml" />
+    <Content Include="Views\StudentsNew\AddNewStudent.cshtml" />
+    <Content Include="Views\Students\AddNewStudent.cshtml" />
+    <Content Include="Views\Students - Copy\AddNewStudent.cshtml" />
+    <Content Include="Views\Students - Copy\Create.cshtml" />
+    <Content Include="Views\Students - Copy\Delete.cshtml" />
+    <Content Include="Views\Students - Copy\Edit.cshtml" />
+    <Content Include="Views\Students - Copy\Index.cshtml" />
+    <Content Include="Views\Students - Copy\UpdateCandidateExcel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
