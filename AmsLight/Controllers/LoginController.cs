@@ -39,6 +39,13 @@ namespace AmsLight.Controllers
             return View(login);
         }
 
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+
+            FormsAuthentication.RedirectToLoginPage();
+             return RedirectToAction("Index", "Home");
+        }
         public ActionResult forgotpassword()
         {
             return View();

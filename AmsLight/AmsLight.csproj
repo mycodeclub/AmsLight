@@ -104,7 +104,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="css\bootstrap-datetimepicker.css" />
     <Content Include="css\sb-admin-2.css" />
     <Content Include="css\sb-admin-2.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1738,7 +1737,6 @@
     <Content Include="HomePageElements\magnific-popup\magnific-popup.css" />
     <Content Include="img\loginPage.jpeg" />
     <Content Include="img\undraw_posting_photo.svg" />
-    <Content Include="js\bootstrap-datetimepicker.min.js" />
     <Content Include="js\demo\chart-area-demo.js" />
     <Content Include="js\demo\chart-bar-demo.js" />
     <Content Include="js\demo\chart-pie-demo.js" />
@@ -3488,7 +3486,6 @@
     <Content Include="Views\Students\UpdateCandidateExcel.cshtml" />
     <Content Include="Views\Attendance\Index.cshtml" />
     <Content Include="Views\Attendance\GetStudentsByBatchId.cshtml" />
-    <Content Include="Views\Attendance\DownloadPreviousAttendance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

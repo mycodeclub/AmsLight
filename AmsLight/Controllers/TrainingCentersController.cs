@@ -18,7 +18,9 @@ namespace AmsLight.Controllers
         // GET: TrainingCenters
         public ActionResult Index()
         {
-            return View(db.TrainingCenters.ToList());
+            var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+            
+            return View(db.TrainingCenters.Where(tc=>tc.TpId==tpId).ToList());
         }
 
         // GET: TrainingCenters/Details/5
