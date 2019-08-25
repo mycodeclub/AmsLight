@@ -34,11 +34,7 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AddressLine1)
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
-                </th>
+                </th> 
                 <th></th>
             </tr>
 
@@ -69,9 +65,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.AddressLine1)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
+                    
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.TrainingCenterId }) |
                         @Html.ActionLink("Details", "Details", new { id = item.TrainingCenterId })

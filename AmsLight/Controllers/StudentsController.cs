@@ -173,5 +173,32 @@ namespace AmsLight.Controllers
             }
             return isSavedSuccessfully;
         }
+
+        public ActionResult AddNewStudent(int CenterId, int BatchId)
+        {
+            TempData["CenterId"] = CenterId;
+            TempData["BatchId"] = BatchId;
+            ViewBag.BatchId = new SelectList(db.Batches, "BatchId", "BatchCode");
+
+            return View();
+        }// POST: StudentsNew/AddNewStudent
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddNewStudent([Bind(Include = "StudentId,StudentName,Father_Husband_Name,Gender,Address,MobileNo,AadhaarId,BatchId,CandidateCode")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                student.BatchId = Convert.ToInt32(TempData["BatchId"]);
+                student.TpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
+                db.Students.Add(student);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.BatchId = new SelectList(db.Batches, "BatchId", "BatchCode", student.BatchId);
+            return View(student);
+        }
     }
 }

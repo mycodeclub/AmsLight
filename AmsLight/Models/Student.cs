@@ -19,6 +19,7 @@ namespace AmsLight.Models
         [Required]
         public int TpId { get; set; }
         [Required]
+        [DisplayName("Candidate Code")]
         public string CandidateCode { get; set; }
         public virtual Batch Batch { get; set; }
 
@@ -39,6 +40,15 @@ namespace AmsLight.Models
         [NotMapped]
 
         public bool IsPresent { get; set; }
+
+        [DisplayName("Father Name")]
+        public string Father_Husband_Name { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Address { get; set; }
+        public string MobileNo { get; set; }
+        public string AadhaarId { get; set; }
 
     }
 }

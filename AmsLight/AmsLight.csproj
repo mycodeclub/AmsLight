@@ -3293,11 +3293,15 @@
     <Content Include="vendor\jquery\jquery.min.js" />
     <Content Include="vendor\jquery\jquery.slim.js" />
     <Content Include="vendor\jquery\jquery.slim.min.js" />
+    <None Include="Views\Attendance\DownloadPreviousAttendance.cshtml" />
+    <None Include="Views\Students\Edit.cshtml" />
+    <None Include="Views\Students\Index.cshtml" />
+    <None Include="Views\Students\AddNewStudent.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Views\Students\Create.cshtml" />
     <Content Include="Views\Students\Delete.cshtml" />
-    <Content Include="Views\Students\Edit.cshtml" />
-    <Content Include="Views\Students\Index.cshtml" />
+    <Content Include="Views\Students\EditOld.cshtml" />
+    <Content Include="Views\Students\IndexOld.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -3314,6 +3318,7 @@
     </Compile>
     <Compile Include="Models\AmsDbContext.cs" />
     <Compile Include="Models\Attendance.cs" />
+    <Compile Include="Models\AttendanceLog.cs" />
     <Compile Include="Models\Batch.cs" />
     <Compile Include="Models\CandidateExcel.cs" />
     <Compile Include="Models\Login.cs" />

@@ -13,7 +13,7 @@ namespace AmsLight.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            return View(new Login() { UserName = "tp1", Password = "tp1", RememberMe = "on" });
+            return View(new Login() );
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -41,8 +41,7 @@ namespace AmsLight.Controllers
 
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
-
+            FormsAuthentication.SignOut(); 
             FormsAuthentication.RedirectToLoginPage();
              return RedirectToAction("Index", "Home");
         }

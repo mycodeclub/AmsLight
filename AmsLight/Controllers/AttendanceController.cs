@@ -1,11 +1,13 @@
 ﻿using AmsLight.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace AmsLight.Controllers
 {
@@ -27,6 +29,8 @@ namespace AmsLight.Controllers
         }
         public ActionResult DownloadCSV(Attendance att)
         {
+            db.Configuration.ProxyCreationEnabled = false;
+
             Random r = new Random();
             try
             {
@@ -60,8 +64,22 @@ namespace AmsLight.Controllers
                         csv.Append("\n");
                     count++;
                 }
-                var fileName = att.SelectedTc.TrainingCenterId + "_" + att.SelectedBatch.BatchId + "_" + attendancesDate;
-                System.IO.File.WriteAllText(Server.MapPath("~") + "/SavedAtt/" + fileName + ".csv", csv.ToString());
+                var today = att.AttendancesDate;
+                var attLog = db.AttendanceLog.Where(al => (DbFunctions.TruncateTime(al.AttendancesDate) <= today) && (al.batchId == att.SelectedBatch.BatchId)).FirstOrDefault();
+                if (attLog == null)
+                {
+                    attLog = new AttendanceLog();
+                }
+                attLog.batchId = att.SelectedBatch.BatchId;
+                attLog.CreateDate = System.DateTime.Now;
+                attLog.AttendancesDate = att.AttendancesDate;
+                attLog.AttendanceCsv = csv.ToString();
+                // attLog.ObjJson = new JavaScriptSerializer().Serialize(att.SelectedBatch);
+                db.AttendanceLog.Add(attLog);
+                if (attLog.AttendanceId > 0)
+                    db.Entry(attLog).State = EntityState.Modified;
+                db.SaveChanges();
+
                 return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
             }
             catch (Exception ex)
@@ -79,21 +97,15 @@ namespace AmsLight.Controllers
         public ActionResult DownloadPreviousAttCsv(FormCollection fc)
         {
             var trainingCenterId = fc["SelectedTc.TrainingCenterId"];
-            var batchId = fc["SelectedBatch.BatchId"];
+            var batchId = Convert.ToInt32( fc["SelectedBatch.BatchId"]);
             var date = Convert.ToDateTime(fc["AttendancesDate"]);
-            var attendancesDate = date.Year.ToString() + FormatToTwoDigit(date.Month) + FormatToTwoDigit(date.Day);
-
-            try
+            var attLog = db.AttendanceLog.Where(al => (DbFunctions.TruncateTime(al.AttendancesDate) <= date) && (al.batchId == batchId)).FirstOrDefault();
+            if (attLog == null)
             {
-                var fileName = trainingCenterId + "_" + batchId + "_" + attendancesDate;
-                var csv = System.IO.File.ReadAllText(Server.MapPath("~") + "/SavedAtt/" + fileName + ".csv");
-                return File(new System.Text.UTF8Encoding().GetBytes(csv.ToString()), "text/csv", "attendances" + attendancesDate + ".csv");
+                 return File(new System.Text.UTF8Encoding().GetBytes("System Did Not Have Attendance Record For Date : " + fc["AttendancesDate"]), "text/txt", "AttendanceNotFound.txt");
             }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(404, "Att Not Generated");
-            }
-        }
+            return File(new System.Text.UTF8Encoding().GetBytes(attLog.AttendanceCsv.ToString()), "text/csv", "attendances" + attLog.AttendancesDate.Date.ToString() + ".csv");
+          }
         public JsonResult GetBatchesByCenterId(int CenterId)
         {
             var batches = db.Batches.Where(b => b.TrainingCenterId == CenterId).ToList();

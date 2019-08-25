@@ -15,6 +15,7 @@ namespace AmsLight.Models
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
+        public virtual DbSet<AttendanceLog> AttendanceLog { get; set; }
 
         public System.Data.Entity.DbSet<AmsLight.Models.TrainingCenter> TrainingCenters { get; set; }
     }

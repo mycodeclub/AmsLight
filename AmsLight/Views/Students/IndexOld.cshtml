@@ -61,9 +61,7 @@
                 <center>
                     <div id="UploadStudentsExcell" class="col-md-2 col-sm-2 col-xs-12 ">
                         <div class="form-group">
-                            <button class="btn btn-outline-info" onclick="window.location.href='/students/AddNewStudent?centerId='+   $('#trainingCentersDDL option:selected').val()+'&BatchId='+ $('#BatchDDL option:selected').val()"> AddNewStudent </button>
-                             @*@Html.ActionLink("Create", "Create_")*@
-                            @*<input type="button" value="Upload Students Excell To This Batch" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />*@
+                            <input type="button" value="Upload Students Excell To This Batch" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />
                         </div>
                     </div>
                 </center>
@@ -71,12 +69,10 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Student Name </th>
                                 <th>Candidate Code</th>
-                                <th>Candidate Name </th>
-                                <th>Father Name </th>
-                                <th>Aadhar No. </th>
                                 <th> </th>
-</thead>
+                        </thead>
                         <tbody>
                             @if (!Model.Any())
                             {
@@ -89,52 +85,43 @@
 
                             @foreach (var item in Model)
                             {
-                        <tr>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CandidateCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StudentName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Father_Husband_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AadhaarId)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId })
-                            </td>
-                        </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StudentName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CandidateCode)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.StudentId })
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                         <tbody>
                             <tr>
+                                <th>Student Name </th>
                                 <th>Candidate Code</th>
-                                <th>Candidate Name </th>
-                                <th>Father Name </th>
-                                <th>Aadhar No. </th>
                                 <th> </th>
-</tbody>
+                        </tbody>
                     </table>
                 </div>
-                }
+            }
 
-            </div>
         </div>
     </div>
+</div>
 
 
 
-    @section Scripts{
-        <script src="~/vendor/datatables/jquery.dataTables.js"></script>
-        <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+@section Scripts{
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $('#dataTable').DataTable();
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
 
-    }
+}
