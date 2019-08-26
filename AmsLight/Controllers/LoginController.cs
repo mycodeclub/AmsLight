@@ -13,7 +13,7 @@ namespace AmsLight.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            return View(new Login() );
+            return View(new Login());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -28,11 +28,8 @@ namespace AmsLight.Controllers
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(user.LoginUserId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
-                //     var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-                //     Read Login Id ThroughOut the application.
-
-                //db.Entry(user).State = EntityState.Modified;
-                //db.SaveChanges();
+                var name = db.TrainingPartner.Find(user.LoginUserId).TpName;
+             Session["LoginTp"]  = name;
                 return RedirectToAction("Index", "Dashboard");
             }
             else { ModelState.AddModelError("Password", "Invalid User Name or Password"); }
@@ -41,9 +38,9 @@ namespace AmsLight.Controllers
 
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut(); 
+            FormsAuthentication.SignOut();
             FormsAuthentication.RedirectToLoginPage();
-             return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult forgotpassword()
         {

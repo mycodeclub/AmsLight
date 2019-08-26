@@ -1,7 +1,6 @@
 ﻿@model AmsLight.Models.Attendance
 @{
-    ViewBag.Title = "Attendence";
-    ViewBag.HeaderText = "Update Attendence";
+    ViewBag.Title = "Attendence"; 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,8 +14,8 @@
         @Html.HiddenFor(m => m.SelectedBatch.Trainer2)
         <div class="card">
             <div class="card-header">
-                Select Select Training Center and Batch to genrate Attendence.
-            </div>
+                Select Training Center And Batch To Generate Attendence.
+                </div>
             <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-4 col-sm-4 col-xs-12">
@@ -42,7 +41,7 @@
                     </div>
                     <div class="form-group col-4">
                         @Html.LabelFor(model => Model.AttendancesDate)
-                        <input class="form-control text-box single-line" data-val="true" data-val-date="The field Attendances Date must be a date." data-val-required="The Attendances Date field is required." id="AttendancesDate" name="AttendancesDate" type="date" value="@Model.AttendancesDate.ToString("yyyy-MM-dd")">
+                        <input class="form-control text-box single-line" data-val="true" data-val-date="The field Attendance Date must be a date." data-val-required="The Attendances Date field is required." id="AttendancesDate" name="AttendancesDate" type="date" value="@Model.AttendancesDate.ToString("yyyy-MM-dd")">
 
                         @Html.ValidationMessageFor(model => model.AttendancesDate, "", new { @class = "text-danger" })
                     </div>

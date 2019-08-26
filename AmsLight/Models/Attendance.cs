@@ -11,7 +11,7 @@ namespace AmsLight.Models
     public class Attendance
     {
         [Required]
-        [Display(Name = "Attendances Date")]
+        [Display(Name = "Attendance Date")]
         [DataType(DataType.Date)]
 
         public DateTime AttendancesDate { get; set; }

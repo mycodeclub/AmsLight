@@ -56,7 +56,7 @@ namespace AmsLight.Controllers
         public ActionResult Create()
         {
             var tpId = Convert.ToInt32(System.Web.HttpContext.Current.User.Identity.Name);
-            ViewBag.TrainingCenterId = new SelectList(db.TrainingCenters, "TrainingCenterId", "CenterCode");
+            ViewBag.TrainingCenterId = new SelectList(db.TrainingCenters.Where(tc=>tc.TpId==tpId), "TrainingCenterId", "CenterCode");
             return View();
         }
 
