@@ -9,6 +9,8 @@ using System.Web.Mvc;
 
 namespace AmsLight.Controllers
 {
+    [Authorize]
+
     public class TpProfileController : Controller
     {
         private AmsDbContext db = new AmsDbContext();

@@ -15,5 +15,10 @@ namespace AmsLight.Controllers
                 return RedirectToAction("Index", "Dashboard");
             return View();
         }
+
+        public ActionResult InActive()
+        {
+             return View();
+        }
     }
 }

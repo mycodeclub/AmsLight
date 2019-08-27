@@ -10,6 +10,7 @@ namespace AmsLight.Controllers
 {
     public class LoginController : Controller
     {
+        AmsDbContext db = new AmsDbContext();
         // GET: Login
         public ActionResult Index()
         {
@@ -19,20 +20,29 @@ namespace AmsLight.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "UserName,Password,RememberMe")] Login login)
         {
-            AmsDbContext db = new AmsDbContext();
             var user = db.Logins.Where(l => l.UserName == login.UserName && l.Password == login.Password).FirstOrDefault();
-            if (user.TypeId == 1 && user.TpId == -999)
-            {
-                // Redirect to Super andmin. Also add / set the user roles
-            }
             if (user != null)
             {
-                FormsAuthentication.SetAuthCookie(user.TpId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
-                var name = db.TrainingPartner.Find(user.TpId).TpName;
-             Session["LoginTp"]  = name;
-                return RedirectToAction("Index", "Dashboard");
+                if (user.TypeId == 1 && user.TpId == -999)
+                {
+                    FormsAuthentication.SetAuthCookie(user.TpId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
+                    return RedirectToAction("Index", "SuperAdmin");
+                }
+                if (user != null)
+                {
+                    var tp = db.TrainingPartner.Find(user.TpId);
+                    if (!tp.IsActive)
+                    {
+                        return RedirectToAction("InActive", "Home");
+                    }
+                    FormsAuthentication.SetAuthCookie(user.TpId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
+                    var name = db.TrainingPartner.Find(user.TpId).TpName;
+                    Session["LoginTp"] = name;
+                    return RedirectToAction("Index", "Dashboard");
+                }
             }
             else { ModelState.AddModelError("Password", "Invalid User Name or Password"); }
+
             return View(login);
         }
 

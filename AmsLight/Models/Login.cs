@@ -14,7 +14,9 @@ namespace AmsLight.Models
         public int LoginId { get; set; }
         public int TypeId { get; set; }
         public int TpId { get; set; }
+        [Required]
         public string UserName { get; set; }
+        [Required]
         public string Password { get; set; }
         [NotMapped]
         public string RememberMe { get; set; }
