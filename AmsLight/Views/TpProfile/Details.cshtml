@@ -1,0 +1,39 @@
+﻿@model AmsLight.Models.TrainingPartner
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mb-12">
+                <div class="card border shadow h-100 py-2">
+                    <div class="card-body">
+
+                         <h3 class="text-lg-center">@Html.DisplayFor(model => model.TpName)</h3>
+                            <hr />
+                            <table>
+                                <tr><th> @Html.DisplayNameFor(model => model.Phone1)                </th><td> @Html.DisplayFor(model => model.Phone1)  </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.Phone2)                </th><td> @Html.DisplayFor(model => model.Phone2)  </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.City)                  </th><td> @Html.DisplayFor(model => model.City)    </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.State)                 </th><td> @Html.DisplayFor(model => model.State)   </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.AddressLine1)          </th><td> @Html.DisplayFor(model => model.AddressLine1)  </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.AddressLine2)          </th><td> @Html.DisplayFor(model => model.AddressLine2)  </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.Zip)                   </th><td> @Html.DisplayFor(model => model.Zip)  </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.RegistrationDate)      </th><td> @Html.DisplayFor(model => model.RegistrationDate) </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.SubscriptionStartDate) </th><td> @Html.DisplayFor(model => model.SubscriptionStartDate) </td></tr>
+                                <tr><th> @Html.DisplayNameFor(model => model.SubscriptionEndDate) </th><td> @Html.DisplayFor(model => model.SubscriptionEndDate) </td></tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = Model.TpId })
+                                    </td>
+                                </tr>
+                            </table>
+                     
+                    </div>
+                </div>
+          
+             
+                </div>
+            </div>

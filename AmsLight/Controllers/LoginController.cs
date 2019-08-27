@@ -21,14 +21,14 @@ namespace AmsLight.Controllers
         {
             AmsDbContext db = new AmsDbContext();
             var user = db.Logins.Where(l => l.UserName == login.UserName && l.Password == login.Password).FirstOrDefault();
-            if (user.TypeId == 1 && user.LoginUserId == -999)
+            if (user.TypeId == 1 && user.TpId == -999)
             {
                 // Redirect to Super andmin. Also add / set the user roles
             }
             if (user != null)
             {
-                FormsAuthentication.SetAuthCookie(user.LoginUserId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
-                var name = db.TrainingPartner.Find(user.LoginUserId).TpName;
+                FormsAuthentication.SetAuthCookie(user.TpId.ToString(), login?.RememberMe != null && login.RememberMe.Equals("on") ? true : false);
+                var name = db.TrainingPartner.Find(user.TpId).TpName;
              Session["LoginTp"]  = name;
                 return RedirectToAction("Index", "Dashboard");
             }

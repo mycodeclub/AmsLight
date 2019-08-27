@@ -1,10 +1,11 @@
-﻿@{
+﻿@model AmsLight.Models.TrainingPartner
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "DashBoard"; 
+    ViewBag.Title = "DashBoard";
 }
-<!-- Begin Page Content -->
+
 <div class="container-fluid">
-    <!-- Content Row -->
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
@@ -36,32 +37,45 @@
                 </div>
             </div>
         </div>
-     </div>
-    <!-- Content Row -->
-    <div class="row">
+    </div>
+     <div class="row">
         <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Training Partner </h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="~/#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="~/#">Action</a>
-                            <a class="dropdown-item" href="~/#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="~/#">Something else here</a>
                         </div>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        @*<canvas id="myAreaChart"></canvas>*@
+
+                        <div>
+                            <h3 class="text-lg-center">   @Html.DisplayFor(model => model.TpName)</h3>
+                            <hr />
+                            <ul style="list-style-type: none;">
+
+                                <li><b>  @Html.DisplayNameFor(model => model.Phone1) : </b>   @Html.DisplayFor(model => model.Phone1)  </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.Phone2) : </b>   @Html.DisplayFor(model => model.Phone2)  </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.City) : </b>   @Html.DisplayFor(model => model.City) </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.State) : </b>   @Html.DisplayFor(model => model.State) </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.AddressLine1)  : </b>   @Html.DisplayFor(model => model.AddressLine1)  </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.AddressLine2)  : </b>   @Html.DisplayFor(model => model.AddressLine2) </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.Zip) : </b>   @Html.DisplayFor(model => model.Zip) </li>
+                                <li><b>  @Html.DisplayNameFor(model => model.RegistrationDate)      : </b> @Html.DisplayFor(model => model.RegistrationDate)</li>
+                                <li><b>  @Html.DisplayNameFor(model => model.SubscriptionStartDate) : </b> @Html.DisplayFor(model => model.SubscriptionStartDate)</li>
+                                <li><b>  @Html.DisplayNameFor(model => model.SubscriptionEndDate) : </b> @Html.DisplayFor(model => model.SubscriptionEndDate)</li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,5 +118,5 @@
                 </div>
             </div>
         </div>
-    </div> 
-</div> 
+    </div>
+</div>

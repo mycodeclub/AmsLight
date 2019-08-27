@@ -22,11 +22,14 @@ namespace AmsLight.Controllers
 
             var tcCount= (from tc in db.TrainingCenters where tc.TpId == tpId select tc).Count();
             ViewData["TrainingCentersCount"] = tcCount;
-             //join b in db.Batches on tc.TrainingCenterId equals b.TrainingCenterId
-
-
-
-            return View();
+            //join b in db.Batches on tc.TrainingCenterId equals b.TrainingCenterId
+            
+            TrainingPartner trainingPartner = db.TrainingPartner.Find(tpId);
+            if (trainingPartner == null)
+            {
+                return HttpNotFound();
+            }
+            return View(trainingPartner); 
         }
     }
 }

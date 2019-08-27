@@ -3312,6 +3312,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\TpProfileController.cs" />
     <Compile Include="Controllers\TrainingCentersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3491,6 +3492,8 @@
     <Content Include="Views\Students\UpdateCandidateExcel.cshtml" />
     <Content Include="Views\Attendance\Index.cshtml" />
     <Content Include="Views\Attendance\GetStudentsByBatchId.cshtml" />
+    <Content Include="Views\TpProfile\Details.cshtml" />
+    <Content Include="Views\TpProfile\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
