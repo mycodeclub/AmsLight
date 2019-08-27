@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AmsLight.Models.Student>
 
 @{
-    ViewBag.Title = "Manage Students"; 
+    ViewBag.Title = "Manage Students";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<AmsLight.Models.Batch> batches = ViewBag.Batches;
     List<AmsLight.Models.TrainingCenter> trainingCenters = ViewBag.TrainingCenters;
@@ -58,11 +58,18 @@
             @if (selectedBatchId != 0)
             {
                 <center>
-                    <div id="UploadStudentsExcell" class="col-md-2 col-sm-2 col-xs-12 ">
+                    <div id="UploadStudentsExcell" class="col-md-12">
                         <div class="form-group">
-                            <button class="btn btn-outline-info" onclick="window.location.href='/students/AddNewStudent?centerId='+   $('#trainingCentersDDL option:selected').val()+'&BatchId='+ $('#BatchDDL option:selected').val()"> AddNewStudent </button>
-                             @*@Html.ActionLink("Create", "Create_")*@
-                            @*<input type="button" value="Upload Students Excell To This Batch" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />*@
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="button" value="Upload Students Excell" class="btn btn-outline-info" onclick="window.location.href = '/students/Create/'+  $('#BatchDDL option:selected').val()" />
+                                    </td>
+                                    <td>
+                                         <button class="btn btn-outline-info" onclick="window.location.href='/students/AddNewStudent?centerId='+   $('#trainingCentersDDL option:selected').val()+'&BatchId='+ $('#BatchDDL option:selected').val()"> Add New Student </button>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </center>
@@ -75,7 +82,7 @@
                                 <th>Father Name </th>
                                 <th>Aadhar No. </th>
                                 <th> </th>
-</thead>
+                        </thead>
                         <tbody>
                             @if (!Model.Any())
                             {
@@ -88,24 +95,24 @@
 
                             @foreach (var item in Model)
                             {
-                        <tr>
+                                <tr>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CandidateCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StudentName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Father_Husband_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AadhaarId)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId })
-                            </td>
-                        </tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CandidateCode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StudentName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Father_Husband_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AadhaarId)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.StudentId })
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                         <tbody>
@@ -115,25 +122,25 @@
                                 <th>Father Name </th>
                                 <th>Aadhar No. </th>
                                 <th> </th>
-</tbody>
+                        </tbody>
                     </table>
                 </div>
-                }
+            }
 
-            </div>
         </div>
     </div>
+</div>
 
 
 
-    @section Scripts{
-        <script src="~/vendor/datatables/jquery.dataTables.js"></script>
-        <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
+@section Scripts{
+    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $('#dataTable').DataTable();
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
 
-    }
+}
